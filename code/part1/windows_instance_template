@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  KeyName:
+    Description: Amazon EC2 Key Pair
+    Type: AWS::EC2::KeyPair::DETHAMAT-keypair
+  VPC:
+    Description: VPC to deploy resources into
+    Type: 'AWS::EC2::VPC::Id'
+  Subnet:
+    Description: Subnet to deploy resources into
+    Type: 'AWS::EC2::Subnet::Id'
+  
