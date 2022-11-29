@@ -1,12 +1,64 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   KeyName:
     Description: Amazon EC2 Key Pair
-    Type: AWS::EC2::KeyPair::DETHAMAT-keypair
+    Type: 'AWS::EC2::KeyPair::DETHAMAT-keypair'
   VPC:
     Description: VPC to deploy resources into
     Type: 'AWS::EC2::VPC::Id'
   Subnet:
     Description: Subnet to deploy resources into
     Type: 'AWS::EC2::Subnet::Id'
+  SecurityGroupIds:
+    Type: 'List<AWS::EC2::SecurityGroup::Id>'
+  LatestWindowsAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: /aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base
+
+Resources:
+  WindowsInstanceRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+  WindowsInstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref WindowsInstanceRole
+  WindowsInstanceRolePolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: WindowsInstanceRolePolicy
+      PolicyDocument:
+      Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - 's3:Get*'
+              - 's3:List*'
+            Resource: '*'
+      Roles:
+        - !Ref WindowsInstanceRole
+  WindowsInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !Ref LatestWindowsAmiId
+      KeyName: !Ref KeyName
+      InstanceType: t2.micro
+      SecurityGroupIds: !Ref SecurityGroupIds
+      SubnetId: !Ref Subnet
+      IamInstanceProfile: !Ref WindowsInstanceProfile
+      Tags:
+        - Key: Name
+          Value: DE-Extract-Windows-Instance
+
   
