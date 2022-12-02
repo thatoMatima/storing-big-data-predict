@@ -32,7 +32,7 @@ def get_current_time(second_delta):
         datetime.datetime: Current time with delta time applied.
     """
     now = datetime.now()
-    current_delta_time = None
+    current_delta_time = now + timedelta(seconds = second_delta)
 
     # ===================== STUDENT INPUT REQUIRED ======================================
     # Complete this function as part of Step 3 in order to produce a datetime result that 
@@ -75,7 +75,7 @@ def lambda_handler(event, context):
 
     # ======================== EDIT THIS SECTION ========================================
     # Configure DynamoDB as part of Step 3
-    __TableName__ = 'DEDOREXP-streaming-dynamodb' # <-- Insert your table name
+    __TableName__ = 'DETHAMAT-streaming-dynamodb' # <-- Insert your table name
     # Configure Firehose service as part of Step 6
     firehose_name = 'DEDOREXP-deliverystream' # <-- Insert your Firehose name
     # ===================================================================================
@@ -88,7 +88,8 @@ def lambda_handler(event, context):
     # Write code here as part of Step 3 to connect to DynamoDB to retrieve the database and 
     # table object you've created. Use the boto3 client to perform this task. 
     # Store the resulting object in a variable called `table`:
-    table = None # <-- Write code to update the value of this variable.
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('DETHAMAT-streaming-dynamodb') # <-- Write code to update the value of this variable.
     # ===================================================================================
 
 
