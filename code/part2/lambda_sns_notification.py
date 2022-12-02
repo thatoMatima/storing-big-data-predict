@@ -16,9 +16,9 @@ import json
 
 # ======================== EDIT THIS SECTION ========================================
 # Insert your SNS topic ARN below
-sns_arn = "arn:aws:sns:your:topic:here" 
+sns_arn = "arn:aws:sns:eu-west-1:254823946310:DETHAMAT-streaming-sns-topic.fifo" 
 # Insert your full name and surname for marking purposes
-student_name = "Dora Explorer" 
+student_name = "Thato Matima" 
 # ===================================================================================
 
 def lambda_handler(event, context):
